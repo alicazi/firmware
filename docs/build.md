@@ -11,9 +11,9 @@ make
 For the core, or
 
 ```
-make PLATFORM=photon
+make PLATFORM=duo
 ```
-for the Photon, in the top-level directory creates the bootloader and firmware binaries for your device, which are output to subdirectories of the `build/target/` directory.
+for the Redbear, in the top-level directory creates the bootloader and firmware binaries for your device, which are output to subdirectories of the `build/target/` directory.
 
 The top-level make is mainly a convenience to build `bootloader` and `main` projects. It
 supports these targets:
@@ -40,19 +40,19 @@ When building firmware, it's a good idea to build from `main`, since this offers
 additional features compared to building in the root directory, such as `program-dfu` to flash
 the produced firmware to the device.
 
-## Updating System Firmware (Photon)
+## Updating System Firmware (Redbear Duo)
 
-When building locally on the photon from the develop branch, it is necessary
+When building locally on the Redbear Duo from the develop branch, it is necessary
 to update the system firmware to the latest version:
 
-- put the Photon in DFU mode
+- put the Redbear Duo in DFU mode
 - `cd modules`
-- `make PLATFORM=photon clean all program-dfu`
+- `make PLATFORM=duo clean all program-dfu`
 - You can optionally add `APP`/`APPDIR`/`TEST` values to the command above to build a specific application as you would when building `main`.
 
 This will flash the latest system modules and the application to your device.
 
-A key indicator that this is necessary is that the Photon doesn't run your application
+A key indicator that this is necessary is that the Redbear Duo doesn't run your application
 after flashing, due to a version mismatch. The onboard LED will breathe magenta
 to indicate Safe Mode when the application firmware isn't run.
 
@@ -111,6 +111,7 @@ common are listed here:
 | core     | 0           |
 | photon   | 6           |
 | P1       | 8           |
+| Duo      | 88          |
 
 The platform is specified on the command line as
 
@@ -127,9 +128,9 @@ PLATFORM=name
 For example
 
 ```
-make PLATFORM=photon
+make PLATFORM=duo
 ```
-Would build the firmware for the Photon / P0.
+Would build the firmware for the Redbear Duo / Duo.
 
 To avoid repeatedly specifying the platform on the command line, it can be set
 as an environment variable.
@@ -137,13 +138,13 @@ as an environment variable.
 Linux/OS X:
 
 ```
-export PLATFORM=photon
+export PLATFORM=duo
 ```
 
 Windows
 
 ```
-set PLATFORM=photon
+set PLATFORM=duo
 ```
 
 In the commands that follow, we avoid listing the PLATFORM explicitly to keep
@@ -511,36 +512,36 @@ To build the develop branch, follow these guidelines:
 so you avoid having to type them out for each build. The environment variable value can be overridden
 by passing the variable on the command line.
  - `PARTICLE_DEVELOP` can be set in the environment when building from the `develop` branch. (Caveats apply that this is bleeding edge!)
- - `PLATFORM` set in the environment if you mainly build for one platform, e.g. the Photon.
+ - `PLATFORM` set in the environment if you mainly build for one platform, e.g. the Redbear Duo.
 
-### Photon
+### Redbear Duo
 
-Here are some common recipes when working with the photon. Note that `PLATFORM=photon` doesn't need to be present if you have `PLATFORM=photon` already defined in your environment.
+Here are some common recipes when working with the Redbear Duo. Note that `PLATFORM=duo` doesn't need to be present if you have `PLATFORM=duo` already defined in your environment.
 
 ```
 # Complete rebuild and DFU flash of latest system and application firmware
-firmware/modules$ make clean all program-dfu PLATFORM=photon
+firmware/modules$ make clean all program-dfu PLATFORM=duo
 
 # Incremental build and flash of latest system and application firmware
-firmware/modules$ make all program-dfu PLATFORM=photon
+firmware/modules$ make all program-dfu PLATFORM=duo
 
 # Build system and application for use with debugger (Programmer Shield)
 # APP/APPDIR can also be specified here to build the non-default application
-firmware/modules$ make clean all program-dfu PLATFORM=photon USE_SWD_JTAG=y
+firmware/modules$ make clean all program-dfu PLATFORM=duo USE_SWD_JTAG=y
 
 # Incremental build and flash user application.cpp only (note the directory)
-firmware/main$ make all program-dfu PLATFORM=photon
+firmware/main$ make all program-dfu PLATFORM=duo
 
 # Build an external application
-firmware/modules$ make all PLATFORM=photon APPDIR=~/my_app
+firmware/modules$ make all PLATFORM=duo APPDIR=~/my_app
 ```
 
 For system firmware developers:
 
 ```
 # Rebuild and flash the primary unit test application
-firmware/main$ make clean all program-dfu TEST=wiring/no_fixture PLATFORM=photon
+firmware/main$ make clean all program-dfu TEST=wiring/no_fixture PLATFORM=duo
 
 # Build the compilation test (don't flash on device)
-firmware/main$ make TEST=wiring/api PLATFORM=photon
+firmware/main$ make TEST=wiring/api PLATFORM=duo
 ```
